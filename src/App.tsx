@@ -2,8 +2,18 @@ import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import './App.css'
 import { Button, TextField } from '@mui/material';
+import * as React from 'react';
 
 function App() {
+  const [login, setLogin] = React.useState('');
+  const [password, setPassword] = React.useState('');
+
+  const handleLogin = () => {
+    alert('Login: ' + login + ' Password: ' + password);
+    setLogin('');
+    setPassword('');
+  };
+
   return (
     <main className="primary">
       <Container
@@ -33,6 +43,8 @@ function App() {
             id="outlined-basic"
             label="Login"
             variant="outlined"
+            onChange={(e) => setLogin(e.target.value)}
+            value={login}
             InputProps={{
               style: {
                 backgroundColor: '#2E2E2E',
@@ -64,6 +76,8 @@ function App() {
             label="Password"
             type="password"
             variant="outlined"
+            onChange={(e) => setPassword(e.target.value)}
+            value={password}
             InputProps={{
               style: {
                 backgroundColor: '#2E2E2E',
@@ -90,10 +104,7 @@ function App() {
               },
             }}
           />
-          <Button
-            variant="contained"
-            sx={{ bgcolor: '#1E90FF', color: '#FFFFF' }}
-          >
+          <Button variant="contained" onClick={() => handleLogin()}>
             Enviar
           </Button>
         </Box>
