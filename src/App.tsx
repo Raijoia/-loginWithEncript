@@ -8,10 +8,14 @@ function App() {
   const [login, setLogin] = React.useState('');
   const [password, setPassword] = React.useState('');
 
-  const handleLogin = () => {
-    alert('Login: ' + login + ' Password: ' + password);
+  const cleanTextFields = () => {
     setLogin('');
     setPassword('');
+  }
+
+  const sendToDataBase = () => {
+    alert('Login: ' + login + ' Password: ' + password);
+    cleanTextFields();
   };
 
   return (
@@ -104,7 +108,7 @@ function App() {
               },
             }}
           />
-          <Button variant="contained" onClick={() => handleLogin()}>
+          <Button variant="contained" onClick={() => sendToDataBase()}>
             Enviar
           </Button>
         </Box>
