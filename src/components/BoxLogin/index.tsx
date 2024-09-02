@@ -1,5 +1,5 @@
 import Box from '@mui/material/Box';
-import { Button, TextField } from '@mui/material';
+import { Button, Link, TextField } from '@mui/material';
 import * as React from 'react';
 
 function BoxLogin() {
@@ -97,6 +97,9 @@ function BoxLogin() {
           },
         }}
       />
+      <Link href="/cadastrese" underline="hover" variant='body2' sx={{ color: '#1E90FF' }}>
+        Não tem uma conta? Cadastre-se
+      </Link>
       <Button variant="contained" onClick={() => sendToDataBase()}>
         Enviar
       </Button>
