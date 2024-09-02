@@ -46,11 +46,3 @@ table {
 	border-collapse: collapse;
 	border-spacing: 0;
 }
-
-.primary {
-  background-color: #1C1C1C;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-}
