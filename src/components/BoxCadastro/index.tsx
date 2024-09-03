@@ -1,14 +1,16 @@
 import Box from '@mui/material/Box';
-import { Alert, Button, Collapse, Link, TextField } from '@mui/material';
+import { Alert, Button, Collapse, Link, TextField, AlertColor } from '@mui/material';
 import * as React from 'react';
+import api from '../../services/api';
 
 function BoxCadastro() {
   const [login, setLogin] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [passwordAgain, setPasswordAgain] = React.useState('');
   const [showAlert, setShowAlert] = React.useState(false);
-
-
+  const [messageAlert, setMessageAlert] = React.useState('');
+  const [severityAlert, setSeverityAlert] = React.useState<AlertColor>('error');
+  
   const senhaDivergente: boolean = password !== passwordAgain;
 
   const cleanTextFields = () => {
@@ -19,6 +21,8 @@ function BoxCadastro() {
 
   const sendToDataBase = () => {
     if (senhaDivergente) {
+      setMessageAlert('As senhas não conferem');
+      setSeverityAlert('error');
       setShowAlert(true);
       setTimeout(() => {
         setShowAlert(false);
@@ -26,6 +30,18 @@ function BoxCadastro() {
       return;
     } 
     alert('Login: ' + login + ' Password: ' + password + ' PasswordAgain: ' + passwordAgain);
+    api.post('/register', {
+      login,
+      password,
+    });
+
+      setMessageAlert('Usuário cadastrado com sucesso');
+      setSeverityAlert('success');
+      setShowAlert(true);
+      setTimeout(() => {
+        setShowAlert(false);
+      }, 10000);
+
     cleanTextFields();
   };
 
@@ -144,8 +160,11 @@ function BoxCadastro() {
         }}
       />
       <Collapse in={showAlert}>
-        <Alert severity="error" sx={{ transition: 'opacity 0.5s ease-in-out' }}>
-          As senhas não conferem
+        <Alert
+          severity={severityAlert}
+          sx={{ transition: 'opacity 0.5s ease-in-out' }}
+        >
+          {messageAlert}
         </Alert>
       </Collapse>
       <Link
