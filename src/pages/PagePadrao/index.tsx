@@ -1,6 +1,6 @@
 import Container from '@mui/material/Container';
 import './App.css';
-import BoxLogin from '../../components/BoxLogin';
+import { Outlet } from 'react-router-dom';
 
 function PagePadrao() {
   return (
@@ -13,7 +13,7 @@ function PagePadrao() {
           justifyContent: 'center',
         }}
       >
-        <BoxLogin />
+        <Outlet />
       </Container>
     </main>
   );

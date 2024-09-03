@@ -1,18 +1,31 @@
 import Box from '@mui/material/Box';
-import { Button, Link, TextField } from '@mui/material';
+import { Alert, Button, Collapse, Link, TextField } from '@mui/material';
 import * as React from 'react';
 
-function BoxLogin() {
+function BoxCadastro() {
   const [login, setLogin] = React.useState('');
   const [password, setPassword] = React.useState('');
+  const [passwordAgain, setPasswordAgain] = React.useState('');
+  const [showAlert, setShowAlert] = React.useState(false);
+
+
+  const senhaDivergente: boolean = password !== passwordAgain;
 
   const cleanTextFields = () => {
     setLogin('');
     setPassword('');
+    setPasswordAgain('');
   };
 
   const sendToDataBase = () => {
-    alert('Login: ' + login + ' Password: ' + password);
+    if (senhaDivergente) {
+      setShowAlert(true);
+      setTimeout(() => {
+        setShowAlert(false);
+      }, 10000);
+      return;
+    } 
+    alert('Login: ' + login + ' Password: ' + password + ' PasswordAgain: ' + passwordAgain);
     cleanTextFields();
   };
 
@@ -97,19 +110,57 @@ function BoxLogin() {
           },
         }}
       />
+      <TextField
+        id="outlined-basic"
+        label="Password Again"
+        type="password"
+        variant="outlined"
+        onChange={(e) => setPasswordAgain(e.target.value)}
+        value={passwordAgain}
+        InputProps={{
+          style: {
+            backgroundColor: '#2E2E2E',
+            color: '#E0E0E0',
+            borderColor: '#4D4D4D',
+          },
+        }}
+        InputLabelProps={{
+          style: {
+            color: '#E0E0E0',
+          },
+        }}
+        sx={{
+          '& .MuiOutlinedInput-root': {
+            '& fieldset': {
+              borderColor: '#4D4D4D',
+            },
+            '&:hover fieldset': {
+              borderColor: '#E0E0E0',
+            },
+            '&.Mui-focused fieldset': {
+              borderColor: '#1E90FF',
+            },
+          },
+        }}
+      />
+      <Collapse in={showAlert}>
+        <Alert severity="error" sx={{ transition: 'opacity 0.5s ease-in-out' }}>
+          As senhas não conferem
+        </Alert>
+      </Collapse>
       <Link
-        href="/cadastro"
+        href="/"
         underline="hover"
         variant="body2"
         sx={{ color: '#1E90FF' }}
       >
-        Não tem uma conta? Cadastre-se
+        Já tem uma conta? Faça login
       </Link>
       <Button variant="contained" onClick={() => sendToDataBase()}>
-        Enviar
+        Cadastrar
       </Button>
     </Box>
   );
 }
 
-export default BoxLogin;
+export default BoxCadastro;
