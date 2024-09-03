@@ -5,16 +5,18 @@ import api from '../../services/api';
 
 function BoxCadastro() {
   const [login, setLogin] = React.useState('');
+  const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [passwordAgain, setPasswordAgain] = React.useState('');
   const [showAlert, setShowAlert] = React.useState(false);
   const [messageAlert, setMessageAlert] = React.useState('');
   const [severityAlert, setSeverityAlert] = React.useState<AlertColor>('error');
   
-  const senhaDivergente: boolean = password !== passwordAgain;
+  const senhaDivergente: boolean = password !== passwordAgain && password.length > 0 && passwordAgain.length > 0;
 
   const cleanTextFields = () => {
     setLogin('');
+    setEmail('');
     setPassword('');
     setPasswordAgain('');
   };
@@ -28,19 +30,38 @@ function BoxCadastro() {
         setShowAlert(false);
       }, 10000);
       return;
-    } 
-    alert('Login: ' + login + ' Password: ' + password + ' PasswordAgain: ' + passwordAgain);
-    api.post('/register', {
-      login,
-      password,
-    });
-
-      setMessageAlert('Usuário cadastrado com sucesso');
-      setSeverityAlert('success');
+    } else if (login.length === 0 || email.length === 0 || password.length === 0 || passwordAgain.length === 0) {
+      setMessageAlert('Preencha todos os campos');
+      setSeverityAlert('error');
       setShowAlert(true);
       setTimeout(() => {
         setShowAlert(false);
       }, 10000);
+      return;
+    }
+    
+    api
+      .post('/user/register', {
+        username: login,
+        email,
+        password,
+      })
+      .catch((error) => {
+        console.log(error.response);
+        setMessageAlert('Erro ao cadastrar usuário');
+        setSeverityAlert('error');
+        setShowAlert(true);
+        setTimeout(() => {
+          setShowAlert(false);
+        }, 10000);
+      });
+
+    setMessageAlert('Usuário cadastrado com sucesso');
+    setSeverityAlert('success');
+    setShowAlert(true);
+    setTimeout(() => {
+      setShowAlert(false);
+    }, 10000);
 
     cleanTextFields();
   };
@@ -67,6 +88,38 @@ function BoxCadastro() {
         variant="outlined"
         onChange={(e) => setLogin(e.target.value)}
         value={login}
+        InputProps={{
+          style: {
+            backgroundColor: '#2E2E2E',
+            color: '#E0E0E0',
+            borderColor: '#4D4D4D',
+          },
+        }}
+        InputLabelProps={{
+          style: {
+            color: '#E0E0E0',
+          },
+        }}
+        sx={{
+          '& .MuiOutlinedInput-root': {
+            '& fieldset': {
+              borderColor: '#4D4D4D',
+            },
+            '&:hover fieldset': {
+              borderColor: '#E0E0E0',
+            },
+            '&.Mui-focused fieldset': {
+              borderColor: '#1E90FF',
+            },
+          },
+        }}
+      />
+      <TextField
+        id="outlined-basic"
+        label="E-mail"
+        variant="outlined"
+        onChange={(e) => setEmail(e.target.value)}
+        value={email}
         InputProps={{
           style: {
             backgroundColor: '#2E2E2E',
