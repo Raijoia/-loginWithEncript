@@ -1,5 +1,8 @@
 import { useContext } from "react";
 import UserContext from "../../context/UserContext";
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import Typography from '@mui/material/Typography';
 
 function Profile() {
   const context = useContext(UserContext);
@@ -10,28 +13,46 @@ function Profile() {
 
   const { user } = context;
 
-  console.log(user);
-
   return (
-    <>
-      <div>
-        <h1>User Profile</h1>
+    <Card variant="outlined" sx={{ bgcolor: '#2A2A2A' }}>
+      <CardContent>
+        <Typography variant="h5" component="div" sx={{ color: '#E0E0E0' }}>
+          User Profile
+        </Typography>
         {user ? (
           <>
-            <p>ID: {user.id}</p>
-            <p>Email: {user.email}</p>
-            <p>Username: {user.username}</p>
-            <p>Password: {user.password}</p>
-            <p>Status: {user.ativo ? 'Active' : 'Inactive'}</p>
-            <p>created at: {user.createdAt}</p>
-            <p>updated at: {user.updatedAt}</p>
-            <p>deleted at: {user.deletedAt}</p>
+            <Typography sx={{ color: '#E0E0E0' }} variant="body2">
+              ID: {user.id}
+            </Typography>
+            <Typography sx={{ color: '#E0E0E0' }} variant="body2">
+              Email: {user.email}
+            </Typography>
+            <Typography sx={{ color: '#E0E0E0' }} variant="body2">
+              Username: {user.username}
+            </Typography>
+            <Typography sx={{ color: '#E0E0E0' }} variant="body2">
+              Password: {user.password}
+            </Typography>
+            <Typography sx={{ color: '#E0E0E0' }} variant="body2">
+              Status: {user.ativo ? 'Active' : 'Inactive'}
+            </Typography>
+            <Typography sx={{ color: '#E0E0E0' }} variant="body2">
+              created at: {user.createdAt}
+            </Typography>
+            <Typography sx={{ color: '#E0E0E0' }} variant="body2">
+              updated at: {user.updatedAt == null ? 'Not updated' : user.updatedAt}
+            </Typography>
+            <Typography sx={{ color: '#E0E0E0' }} variant="body2">
+              deleted at: {user.deletedAt == null ? 'Not deleted' : user.deletedAt}
+            </Typography>
           </>
         ) : (
-          <p>No user logged in</p>
+          <Typography sx={{ color: '#E0E0E0' }} variant="body2">
+            No user logged in
+          </Typography>
         )}
-      </div>
-    </>
+      </CardContent>
+    </Card>
   );
 }
 
