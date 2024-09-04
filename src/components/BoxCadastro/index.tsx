@@ -2,6 +2,8 @@ import Box from '@mui/material/Box';
 import { Alert, Button, Collapse, Link, TextField, AlertColor } from '@mui/material';
 import * as React from 'react';
 import api from '../../services/api';
+import UserContext from '../../context/UserContext';
+import { useNavigate } from 'react-router-dom';
 
 function BoxCadastro() {
   const [login, setLogin] = React.useState('');
@@ -11,6 +13,11 @@ function BoxCadastro() {
   const [showAlert, setShowAlert] = React.useState(false);
   const [messageAlert, setMessageAlert] = React.useState('');
   const [severityAlert, setSeverityAlert] = React.useState<AlertColor>('error');
+
+  const context = React.useContext(UserContext);
+  const navigate = useNavigate();
+
+  const { setUser } = context || {};
   
   const senhaDivergente: boolean = password !== passwordAgain && password.length > 0 && passwordAgain.length > 0;
 
@@ -46,22 +53,38 @@ function BoxCadastro() {
         email,
         password,
       })
+      .then((response) => {
+        if (setUser) {
+          setUser({
+            id: response.data.id,
+            email: response.data.email,
+            username: response.data.username,
+            ativo: response.data.ativo,
+            password: response.data.password,
+            createdAt: response.data.createdAt,
+            updatedAt: response.data.updated,
+            deletedAt: response.data.deletedAt,
+          });
+        }
+
+        setMessageAlert('Usuário cadastrado com sucesso');
+        setSeverityAlert('success');
+        setShowAlert(true);
+        setTimeout(() => {
+          setShowAlert(false);
+        }, 10000);
+
+        navigate('/profile');
+      })
       .catch((error) => {
         console.log(error.response);
-        setMessageAlert('Erro ao cadastrar usuário');
+        setMessageAlert(`Erro ao cadastrar usuário: ${error.response.data.message}`);
         setSeverityAlert('error');
         setShowAlert(true);
         setTimeout(() => {
           setShowAlert(false);
         }, 10000);
       });
-
-    setMessageAlert('Usuário cadastrado com sucesso');
-    setSeverityAlert('success');
-    setShowAlert(true);
-    setTimeout(() => {
-      setShowAlert(false);
-    }, 10000);
 
     cleanTextFields();
   };

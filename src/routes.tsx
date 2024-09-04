@@ -3,18 +3,23 @@ import Page404 from './pages/Page404';
 import PagePadrao from './pages/PagePadrao';
 import Login from './pages/Login';
 import Cadastro from './pages/Cadastro';
+import { UserProvider } from './context/UserContext';
+import Profile from './pages/Profile';
 
 function AppRouter() {
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<PagePadrao />}>
-          <Route index element={<Login />} />
-          <Route path="cadastro" element={<Cadastro />} />
-        </Route>
-        <Route path="*" element={<Page404 />} />
-      </Routes>
-    </Router>
+    <UserProvider>
+      <Router>
+        <Routes>
+          <Route path="/" element={<PagePadrao />}>
+            <Route index element={<Login />} />
+            <Route path="cadastro" element={<Cadastro />} />
+            <Route path="profile" element={<Profile />} />
+          </Route>
+          <Route path="*" element={<Page404 />} />
+        </Routes>
+      </Router>
+    </UserProvider>
   );
 }
 
