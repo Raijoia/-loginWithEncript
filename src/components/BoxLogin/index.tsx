@@ -1,18 +1,43 @@
 import Box from '@mui/material/Box';
-import { Button, Link, TextField } from '@mui/material';
+import { Alert, AlertColor, Button, Collapse, Link, TextField } from '@mui/material';
 import * as React from 'react';
+import api from '../../services/api';
 
 function BoxLogin() {
   const [login, setLogin] = React.useState('');
   const [password, setPassword] = React.useState('');
+  const [showAlert, setShowAlert] = React.useState(false);
+  const [messageAlert, setMessageAlert] = React.useState('');
+  const [severityAlert, setSeverityAlert] =
+    React.useState<AlertColor>('error');
 
   const cleanTextFields = () => {
     setLogin('');
     setPassword('');
   };
 
-  const sendToDataBase = () => {
+  const checkInDatabase = () => {
     alert('Login: ' + login + ' Password: ' + password);
+    api.post('/user/login', {
+      email: login,
+      password
+    }).then(() => {
+      setMessageAlert('Logado com sucesso');
+      setSeverityAlert('success');
+      setShowAlert(true);
+      setTimeout(() => {
+        setShowAlert(false);
+      }, 10000);
+    }).catch((error) => {
+      console.log(error.response);
+      setMessageAlert(`Erro ao logar usuário: ${error.response.data.message}`);
+      setSeverityAlert('error');
+      setShowAlert(true);
+      setTimeout(() => {
+        setShowAlert(false);
+      }, 10000);
+    })
+
     cleanTextFields();
   };
 
@@ -97,6 +122,14 @@ function BoxLogin() {
           },
         }}
       />
+      <Collapse in={showAlert}>
+        <Alert
+          severity={severityAlert}
+          sx={{ transition: 'opacity 0.5s ease-in-out' }}
+        >
+          {messageAlert}
+        </Alert>
+      </Collapse>
       <Link
         href="/cadastro"
         underline="hover"
@@ -105,7 +138,7 @@ function BoxLogin() {
       >
         Não tem uma conta? Cadastre-se
       </Link>
-      <Button variant="contained" onClick={() => sendToDataBase()}>
+      <Button variant="contained" onClick={() => checkInDatabase()}>
         Enviar
       </Button>
     </Box>
