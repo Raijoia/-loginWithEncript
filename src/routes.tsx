@@ -5,6 +5,7 @@ import Login from './pages/Login';
 import Cadastro from './pages/Cadastro';
 import { UserProvider } from './context/UserContext';
 import Profile from './pages/Profile';
+import AllProfile from './pages/AllProfiles';
 
 function AppRouter() {
   return (
@@ -15,6 +16,7 @@ function AppRouter() {
             <Route index element={<Login />} />
             <Route path="cadastro" element={<Cadastro />} />
             <Route path="profile" element={<Profile />} />
+            <Route path="all-profile" element={<AllProfile />} />
           </Route>
           <Route path="*" element={<Page404 />} />
         </Routes>

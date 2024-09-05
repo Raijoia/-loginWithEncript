@@ -6,7 +6,7 @@ import {
   SetStateAction,
 } from 'react';
 
-interface User {
+export interface User {
   id: string;
   email: string;
   username: string;
